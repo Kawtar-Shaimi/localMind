@@ -15,8 +15,6 @@ class Question extends Model
         'user_id',
         'title',
         'content',
-        'latitude',
-        'longitude',
         'location_name'
     ];
 
