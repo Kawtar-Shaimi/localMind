@@ -13,8 +13,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('content');
-            $table->decimal('latitude', 10, 8);
-            $table->decimal('longitude', 11, 8);
             $table->string('location_name');
             $table->integer('views_count')->default(0);
             $table->integer('answers_count')->default(0);
