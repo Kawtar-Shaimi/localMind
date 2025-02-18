@@ -9,4 +9,4 @@ Route::get('/', function () {
 });
 Route::get('/', [QuestionController::class, 'index']);
 Route::resource('questions', QuestionController::class);
-
+Route::resource('answers', AnswerController::class);
