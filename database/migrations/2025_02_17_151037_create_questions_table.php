@@ -10,15 +10,12 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->text('content');
             $table->string('location_name');
-            $table->integer('views_count')->default(0);
-            $table->integer('answers_count')->default(0);
-            $table->integer('favorites_count')->default(0);
             $table->timestamps();
-            $table->index(['latitude', 'longitude']);
         });
     }
 
