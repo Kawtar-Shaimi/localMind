@@ -22,18 +22,15 @@ class AnswerController extends Controller
     {
         // Valider les données
         $request->validate([
+            'user_id' => 'required',
+            'question_id' => 'required',
             'content' => 'required'
         ]);
 
         // Créer la réponse
-        // $answer = new Answer();
-        // $answer->user_id = auth()->id();
-        // $answer->question_id = $question_id;
-        // $answer->content = $request->content;
-        // $answer->save();
         Answer::create([
-            'user_id' => auth()->id(),
-            'question_id' =>$request-> $question_id,
+            'user_id' => $request->user_id,
+            'question_id' =>$request-> question_id,
             'content' => $request->content
         ]);
 
@@ -45,17 +42,15 @@ class AnswerController extends Controller
     }
 
     // Supprimer une réponse
-    public function destroy($id)
-    {
-        $answer = Answer::find($id);
-        
+    public function destroy(Answer $answer)
+    {        
         // Vérifier si l'utilisateur est le propriétaire
         if ($answer->user_id != auth()->id()) {
             return redirect()->back();
         }
 
         $answer->delete();
-        return redirect()->back()->with('success', 'Réponse supprimée!');
+        return redirect()->route('answers.index')->with('success', 'Réponse supprimée!');
     }
 
 }
