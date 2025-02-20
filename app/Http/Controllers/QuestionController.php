@@ -46,10 +46,10 @@ class QuestionController extends Controller
     }
 
     // Afficher une question
-    public function show($id)
+    public function show(Question $question)
     {
-        $question = Question::find($id);
-        return view('questions.show', ['question' => $question]);
+        // $question = Question::find($question);
+        return view('questions.show', compact('questions'));
     }
 
     // Afficher le formulaire de modification

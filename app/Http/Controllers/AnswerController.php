@@ -7,6 +7,16 @@ use App\Models\Answer;
 
 class AnswerController extends Controller
 {
+
+    public function index(){
+        $answers = Answer::all();
+        return view('answers.index', compact('answers'));
+    }
+
+
+    public function create(){
+        return view('answers.create');
+    }
     // Enregistrer une nouvelle réponse
     public function store(Request $request, $question_id)
     {
@@ -16,13 +26,22 @@ class AnswerController extends Controller
         ]);
 
         // Créer la réponse
-        $answer = new Answer();
-        $answer->user_id = auth()->id();
-        $answer->question_id = $question_id;
-        $answer->content = $request->content;
-        $answer->save();
+        // $answer = new Answer();
+        // $answer->user_id = auth()->id();
+        // $answer->question_id = $question_id;
+        // $answer->content = $request->content;
+        // $answer->save();
+        Answer::create([
+            'user_id' => auth()->id(),
+            'question_id' =>$request-> $question_id,
+            'content' => $request->content
+        ]);
 
-        return redirect('/questions/' . $question_id)->with('success', 'Réponse ajoutée!');
+        return redirect('/questions/' . $question_id)->route('answer.index')->with('success', 'Réponse ajoutée!');
+    }
+
+    public function edit(Answer $answer){
+        return view('answers.edit', compact('answer'));
     }
 
     // Supprimer une réponse
@@ -38,4 +57,5 @@ class AnswerController extends Controller
         $answer->delete();
         return redirect()->back()->with('success', 'Réponse supprimée!');
     }
+
 }
