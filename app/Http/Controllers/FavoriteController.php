@@ -7,41 +7,26 @@ use App\Models\Favorite;
 
 class FavoriteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $favorites = Favorite::where('user_id', auth()->id())
-        ->get();
-        
-        return view('favorites.index', ['favorites' => $favorites]);
+        $favorites = Favorite::all()->where('user_id', auth()->id());
+        return view('favorites.index', compact('favorites'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required',
+            'question_id' => 'required',
+        ]);
+        Favorite::create([
+            'user_id' => $request->user_id,
+            'question_id' => $request->question_id,
+        ]);
+
+        return redirect('/favorite')->route('favorite.index')->with('success', 'Ajouté aux favoris!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store($question_id)
-    {
-        $favorite = new Favorite();
-        $favorite->user_id = auth()->id();
-        $favorite->question_id = $question_id;
-        $favorite->save();
-
-        return redirect()->back()->with('success', 'Ajouté aux favoris!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
@@ -58,20 +43,26 @@ class FavoriteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Favorite $favorite)
     {
-        //
+        $request->validate([
+            'user_id' => 'required',
+            'question_id' => 'required',
+        ]);
+        $favorite->update([
+            'user_id' => $request->user_id,
+            'question_id' => $request->question_id,
+        ]);
+        return redirect('/favorite')->route('favorite.index')->with('success', 'Favori mis à jour!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($question_id)
     {
         Favorite::where('user_id', auth()->id())
                 ->where('question_id', $question_id)
                 ->delete();
 
-        return redirect()->back()->with('success', 'Retiré des favoris!');
+        return redirect()->route('favorite.index')->with('success', 'Retiré des favoris!');
     }
 }
