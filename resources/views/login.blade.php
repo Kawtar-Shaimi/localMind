@@ -6,7 +6,7 @@
     <div class="fixed top-0 right-0 m-4 bg-white rounded-lg shadow-md p-3 hidden md:flex items-center space-x-4">
         <span class="text-gray-600 flex items-center">
             <i class="far fa-clock mr-2"></i>
-            <span id="current-datetime">2025-02-20 16:25:40</span>
+            <span id="current-datetime">2025-02-20 21:02:21</span>
         </span>
         <div class="border-l border-gray-300 h-6"></div>
         <span class="text-gray-600 flex items-center">
@@ -51,8 +51,12 @@
                             required 
                             class="appearance-none rounded-lg relative block w-full px-10 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition duration-300"
                             placeholder="Entrez votre email"
+                            value="{{ old('email') }}"
                         >
                     </div>
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Password Field -->
@@ -75,6 +79,9 @@
                             placeholder="Entrez votre mot de passe"
                         >
                     </div>
+                    @error('password')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
