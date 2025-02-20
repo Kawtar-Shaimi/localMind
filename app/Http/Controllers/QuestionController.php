@@ -10,39 +10,14 @@ class QuestionController extends Controller
     // Afficher la liste des questions
     public function index()
     {
-        $questions = Question::orderBy('created_at', 'desc')->get();
-        return view('questions.index', ['questions' => $questions]);
+        $questions = Question::all()->orderBy('created_at', 'desc')->get();
+        return view('questions.index', compact('questions'));
     }
 
     // Afficher le formulaire de création
     public function create()
     {
         return view('questions.create');
-    }
-
-    // Enregistrer une nouvelle question
-    public function store(Request $request)
-    {
-        // Valider les données
-        $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'location_name' => 'required'
-        ]);
-
-        // Créer la question
-        $question = new Question();
-        $question->user_id = auth()->id();
-        $question->title = $request->title;
-        $question->content = $request->content;
-        $question->latitude = $request->latitude;
-        $question->longitude = $request->longitude;
-        $question->location_name = $request->location_name;
-        $question->save();
-
-        return redirect('/questions')->with('success', 'Question créée avec succès!');
     }
 
     // Afficher une question
@@ -52,29 +27,38 @@ class QuestionController extends Controller
         return view('questions.show', compact('questions'));
     }
 
-    // Afficher le formulaire de modification
-    public function edit($id)
+    // Enregistrer une nouvelle question
+    public function store(Request $request)
     {
-        $question = Question::find($id);
-        
+        // Valider les données
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required',
+            'location_name' => 'required'
+        ]);
+
+        // Créer la question
+        Question::create([
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'location_name' => $request->location_name
+        ]);
+        return redirect('/questions')->route('questions.index')->with('success', 'Question créée avec succès!');
+    }
+
+    // Afficher le formulaire de modification
+    public function edit(Question $question)
+    {        
         // Vérifier si l'utilisateur est le propriétaire
         if ($question->user_id != auth()->id()) {
-            return redirect('/questions');
+            return view('questions.index',compact('questions'));
         }
-
-        return view('questions.edit', ['question' => $question]);
     }
 
     // Mettre à jour une question
-    public function update(Request $request, $id)
+    public function update(Request $request, Question $question)
     {
-        $question = Question::find($id);
-        
-        // Vérifier si l'utilisateur est le propriétaire
-        if ($question->user_id != auth()->id()) {
-            return redirect('/questions');
-        }
-
         // Valider les données
         $request->validate([
             'title' => 'required|max:255',
@@ -83,25 +67,22 @@ class QuestionController extends Controller
         ]);
 
         // Mettre à jour la question
-        $question->title = $request->title;
-        $question->content = $request->content;
-        $question->location_name = $request->location_name;
-        $question->save();
-
-        return redirect('/questions')->with('success', 'Question mise à jour!');
+        $question->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'location_name' => $request->location_name
+        ]);
+        return redirect('/questions')->route('questions.index')->with('success', 'Question mise à jour!');
     }
 
     // Supprimer une question
-    public function destroy($id)
-    {
-        $question = Question::find($id);
-        
+    public function destroy(Question $question)
+    {        
         // Vérifier si l'utilisateur est le propriétaire
         if ($question->user_id != auth()->id()) {
             return redirect('/questions');
         }
-
         $question->delete();
-        return redirect('/questions')->with('success', 'Question supprimée!');
+        return redirect('/questions')->route('questions.index')->with('success', 'Question supprimée!');
     }
 }
