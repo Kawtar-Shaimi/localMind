@@ -1,86 +1,88 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+    </div>
+
     <!-- User Info Bar - Visible only on larger screens -->
-    <div class="fixed top-0 right-0 m-4 bg-white rounded-lg shadow-md p-3 hidden md:flex items-center space-x-4">
-        <span class="text-gray-600 flex items-center">
+    <div class="fixed top-0 right-0 m-4 bg-white/10 backdrop-blur-md rounded-lg shadow-lg p-3 hidden md:flex items-center space-x-4 z-10">
+        <span class="text-white flex items-center">
             <i class="far fa-clock mr-2"></i>
-            <span id="current-datetime">2025-02-20 21:02:21</span>
+            <span id="current-datetime" class="font-mono">2025-02-21 08:26:03</span>
         </span>
-        <div class="border-l border-gray-300 h-6"></div>
-        <span class="text-gray-600 flex items-center">
+        <div class="border-l border-white/20 h-6"></div>
+        <span class="text-white flex items-center">
             <i class="far fa-user-circle mr-2"></i>
             <span>Kawtar-Shaimi</span>
         </span>
     </div>
 
     <!-- Login Form Card -->
-    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl transform transition duration-500 hover:scale-105">
+    <div class="max-w-md w-full space-y-8 bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 relative z-10">
         <!-- Form Header -->
         <div class="text-center">
-            <h2 class="mt-6 text-3xl font-extrabold text-gray-900 tracking-tight">
+            <h2 class="mt-6 text-4xl font-extrabold text-white tracking-tight">
                 Bienvenue
             </h2>
-            <p class="mt-2 text-sm text-gray-600">
+            <p class="mt-2 text-sm text-white/80">
                 Connectez-vous à votre compte
             </p>
         </div>
 
         <!-- Login Form -->
-        <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
+        <form class="mt-8 space-y-6" method="POST" action="">
             @csrf
             
             <!-- Email Field -->
             <div class="rounded-md -space-y-px">
                 <div class="mb-5">
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="email" class="block text-sm font-medium text-white mb-1">
                         Adresse email
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                            </svg>
+                            <i class="far fa-envelope text-white/60"></i>
                         </div>
                         <input 
                             id="email" 
                             name="email" 
                             type="email" 
                             required 
-                            class="appearance-none rounded-lg relative block w-full px-10 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition duration-300"
+                            class="appearance-none rounded-lg relative block w-full px-10 py-3 bg-white/20 border border-white/10 placeholder-white/60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm transition duration-300"
                             placeholder="Entrez votre email"
                             value="{{ old('email') }}"
                         >
                     </div>
                     @error('email')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Password Field -->
                 <div class="mb-5">
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="password" class="block text-sm font-medium text-white mb-1">
                         Mot de passe
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                            </svg>
+                            <i class="fas fa-lock text-white/60"></i>
                         </div>
                         <input 
                             id="password" 
                             name="password" 
                             type="password" 
                             required 
-                            class="appearance-none rounded-lg relative block w-full px-10 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition duration-300"
+                            class="appearance-none rounded-lg relative block w-full px-10 py-3 bg-white/20 border border-white/10 placeholder-white/60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm transition duration-300"
                             placeholder="Entrez votre mot de passe"
                         >
                     </div>
                     @error('password')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
@@ -92,15 +94,15 @@
                         id="remember-me" 
                         name="remember" 
                         type="checkbox" 
-                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                        class="h-4 w-4 text-purple-500 focus:ring-purple-500 border-white/10 rounded cursor-pointer bg-white/20"
                     >
-                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                    <label for="remember-me" class="ml-2 block text-sm text-white">
                         Se souvenir de moi
                     </label>
                 </div>
 
                 <div class="text-sm">
-                    <a href="{{ route('password.request') }}" class="font-medium text-blue-600 hover:text-blue-500 transition duration-300">
+                    <a href="" class="font-medium text-purple-300 hover:text-white transition duration-300">
                         Mot de passe oublié?
                     </a>
                 </div>
@@ -110,12 +112,10 @@
             <div>
                 <button 
                     type="submit" 
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition duration-300 hover:scale-[1.02]"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform transition duration-300 hover:scale-[1.02] hover:shadow-lg"
                 >
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <svg class="h-5 w-5 text-blue-200 group-hover:text-blue-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                        </svg>
+                        <i class="fas fa-sign-in-alt text-purple-200 group-hover:text-white transition-colors duration-300"></i>
                     </span>
                     Se connecter
                 </button>
@@ -124,15 +124,34 @@
 
         <!-- Register Link -->
         <div class="text-center mt-4">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-white/80">
                 Vous n'avez pas de compte? 
-                <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500 transition duration-300">
+                <a href="" class="font-medium text-purple-300 hover:text-white transition duration-300">
                     Inscrivez-vous
                 </a>
             </p>
         </div>
     </div>
 </div>
+
+<!-- Add these styles to your CSS -->
+<style>
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+</style>
 
 <!-- DateTime Update Script -->
 <script>
@@ -142,7 +161,6 @@
         document.getElementById('current-datetime').textContent = formatted;
     }
     
-    // Update immediately and then every second
     updateDateTime();
     setInterval(updateDateTime, 1000);
 </script>

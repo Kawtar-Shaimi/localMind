@@ -8,3 +8,7 @@ use App\Http\Controllers\FavoriteController;
 route::get('/', function(){
     return view('login');
 });
+
+route::get('/dashboard', function(){
+    return view('dashboard');
+});
