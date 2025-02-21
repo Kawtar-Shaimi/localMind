@@ -55,7 +55,7 @@
                             required 
                             class="appearance-none rounded-lg relative block w-full px-10 py-3 bg-white/20 border border-white/10 placeholder-white/60 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm transition duration-300"
                             placeholder="Entrez votre email"
-                            value="{{ old('email') }}"
+                            {{-- value="{{ old('email') }}" --}}
                         >
                     </div>
                     @error('email')
