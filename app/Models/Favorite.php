@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\User;
+use App\Models\Utilisateur;
 use App\Models\Question;
 
 class Favorite extends Model
@@ -12,13 +12,13 @@ class Favorite extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'utilisateur_id',
         'question_id'
     ];
 
-    public function user()
+    public function utilisateur()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Utilisateur::class);
     }
 
     public function question()

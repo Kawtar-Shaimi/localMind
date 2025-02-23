@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
     // Afficher la liste des questions
     public function index()
     {
-        $questions = Question::all()->orderBy('created_at', 'desc')->get();
-        return view('questions.index', compact('questions'));
+        $questions = Question::with('user')->withCount('answers')->orderBy('created_at', 'desc')->get();
+        return view('index', compact('questions'));
     }
 
     // Afficher le formulaire de création
@@ -23,7 +24,7 @@ class QuestionController extends Controller
     // Afficher une question
     public function show(Question $question)
     {
-        // $question = Question::find($question);
+        $question = $question->with(['answers','user'])->first();
         return view('questions.show', compact('questions'));
     }
 
@@ -39,21 +40,23 @@ class QuestionController extends Controller
 
         // Créer la question
         Question::create([
-            'user_id' => $request->user_id,
+            'utilisateur_id' => Auth::id(),
             'title' => $request->title,
             'content' => $request->content,
             'location_name' => $request->location_name
         ]);
-        return redirect('/questions')->route('questions.index')->with('success', 'Question créée avec succès!');
+        return redirect()->route('home')->with('success', 'Question créée avec succès!');
     }
 
     // Afficher le formulaire de modification
     public function edit(Question $question)
-    {        
+    {
         // Vérifier si l'utilisateur est le propriétaire
-        if ($question->user_id != auth()->id()) {
-            return view('questions.index',compact('questions'));
+        if ($question->utilisateur_id === Auth::id()) {
+            return view('questions.edit',compact('question'));
         }
+
+        return back();
     }
 
     // Mettre à jour une question
@@ -61,7 +64,7 @@ class QuestionController extends Controller
     {
         // Valider les données
         $request->validate([
-            'title' => 'required|max:255',
+            'title' => 'required|string|max:255',
             'content' => 'required',
             'location_name' => 'required'
         ]);
@@ -72,17 +75,17 @@ class QuestionController extends Controller
             'content' => $request->content,
             'location_name' => $request->location_name
         ]);
-        return redirect('/questions')->route('questions.index')->with('success', 'Question mise à jour!');
+        return redirect()->route('home')->with('success', 'Question mise à jour!');
     }
 
     // Supprimer une question
     public function destroy(Question $question)
-    {        
-        // Vérifier si l'utilisateur est le propriétaire
-        if ($question->user_id != auth()->id()) {
-            return redirect('/questions');
+    {
+        if ($question->utilisateur_id === Auth::id()) {
+            $question->delete();
+            return redirect()->route('home')->with('success', 'Question supprimée!');
         }
-        $question->delete();
-        return redirect('/questions')->route('questions.index')->with('success', 'Question supprimée!');
+
+        return back();
     }
 }
