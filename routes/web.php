@@ -44,3 +44,10 @@ Route::prefix('/')->middleware('auth')->group(function () {
         route::delete('/{favorite}', [FavoriteController::class, 'destroy'])->name('destroy');
     });
 });
+
+Route::get('/create', function () {
+    return view('questions.create');
+});
+Route::get('/edit', function () {
+    return view('questions.edit');
+});
