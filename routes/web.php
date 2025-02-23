@@ -54,3 +54,6 @@ Route::get('/edit', function () {
 Route::get('/show', function () {
     return view('questions.show');
 });
+Route::get('/favoris', function () {
+    return view('favorites.index');
+});
