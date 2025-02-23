@@ -51,3 +51,6 @@ Route::get('/create', function () {
 Route::get('/edit', function () {
     return view('questions.edit');
 });
+Route::get('/show', function () {
+    return view('questions.show');
+});
