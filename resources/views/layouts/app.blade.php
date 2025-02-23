@@ -1,25 +1,68 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <!-- ... head content reste le même ... -->
+</head>
+<body class="bg-gray-900 font-sans antialiased">
+    <div class="min-h-screen flex flex-col" x-data="{ mobileMenu: false }">
+        @include('layouts.header')
+        
+        <!-- Page Content -->
+        <main class="flex-1">
+            @yield('content')
+        </main>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <!-- Footer -->
+        @include('layouts.footer')
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <!-- Page Content -->
-            <main>
-                @yield('content')
-            </main>
+        <!-- Toast Notifications -->
+        <div 
+            x-data="{ show: false, message: '', type: 'success' }"
+            @notify.window="show = true; message = $event.detail.message; type = $event.detail.type; setTimeout(() => show = false, 3000)"
+            x-show="show"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform translate-y-2"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform translate-y-2"
+            class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg border"
+            :class="{
+                'bg-green-500/10 border-green-500/20 text-green-400': type === 'success',
+                'bg-red-500/10 border-red-500/20 text-red-400': type === 'error',
+                'bg-blue-500/10 border-blue-500/20 text-blue-400': type === 'info'
+            }"
+        >
+            <div class="flex items-center space-x-3">
+                <template x-if="type === 'success'">
+                    <i class="fas fa-check-circle"></i>
+                </template>
+                <template x-if="type === 'error'">
+                    <i class="fas fa-exclamation-circle"></i>
+                </template>
+                <template x-if="type === 'info'">
+                    <i class="fas fa-info-circle"></i>
+                </template>
+                <span x-text="message"></span>
+            </div>
         </div>
-    </body>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize UTC time update
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // Global notification function
+        window.notify = function(message, type = 'success') {
+            window.dispatchEvent(new CustomEvent('notify', {
+                detail: { message, type }
+            }));
+        };
+    </script>
+
+    <!-- Page Specific Scripts -->
+    @stack('scripts')
+</body>
 </html>
