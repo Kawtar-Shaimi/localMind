@@ -22,7 +22,7 @@ Route::prefix('/')->middleware('auth')->group(function () {
 
     /* Questions routes */
     Route::prefix('questions')->as('questions.')->group(function () {
-        route::get('/crteat', [QuestionController::class, 'create'])->name('create');
+        route::get('/create', [QuestionController::class, 'create'])->name('create');
         route::post('/store', [QuestionController::class, 'store'])->name('store');
         route::get('/{question}', [QuestionController::class, 'show'])->name('show');
         route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('edit');
