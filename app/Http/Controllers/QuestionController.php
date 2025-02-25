@@ -11,7 +11,14 @@ class QuestionController extends Controller
     // Afficher la liste des questions
     public function index()
     {
-        $questions = Question::with('user')->withCount('answers')->orderBy('created_at', 'desc')->get();
+        $questions = Question::with('utilisateur')->withCount('answers')->orderBy('created_at', 'desc')->get();
+        return view('index', compact('questions'));
+    }
+
+    public function userQuestion()
+    {
+        $questions = Question::where('utilisateur_id', Auth::id())
+        ->with('utilisateur')->withCount('answers')->orderBy('created_at', 'desc')->get();
         return view('index', compact('questions'));
     }
 
@@ -24,8 +31,8 @@ class QuestionController extends Controller
     // Afficher une question
     public function show(Question $question)
     {
-        $question = $question->with(['answers','user'])->first();
-        return view('questions.show', compact('questions'));
+        $question = $question->with(['answers','utilisateur'])->withCount('answers')->first();
+        return view('questions.show', compact('question'));
     }
 
     // Enregistrer une nouvelle question

@@ -15,11 +15,14 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <!-- Page Content -->
-            <main>
-                @yield('content')
-            </main>
-        </div>
+        <main class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+            @auth
+                @include('layouts.header')
+            @endauth
+            @yield('content')
+            @auth
+                @include('layouts.footer')
+            @endauth
+        </main>
     </body>
 </html>

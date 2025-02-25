@@ -4,34 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Favorite;
+use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
     public function index()
     {
-        $favorites = Favorite::with(['question', 'user'])->where('utilisateur_id', Auth::id())->get();
+        $favorites = Favorite::with(['question' => function($query){
+            $query->withCount('answers');
+        } , 'utilisateur'])
+        ->where('utilisateur_id', Auth::id())->get();
         return view('favorites.index', compact('favorites'));
     }
 
-    public function store(Request $request)
+    public function store(Question $question)
     {
-        $request->validate([
-            'question_id' => 'required',
-        ]);
-
         Favorite::create([
             'utilisateur_id' => Auth::id(),
-            'question_id' => $request->question_id,
+            'question_id' => $question->id,
         ]);
 
         return redirect()->back()->with('success', 'Ajouté aux favoris!');
     }
 
 
-    public function destroy(Favorite $favorite)
+    public function destroy(Question $question)
     {
-        $favorite->delete();
+        Favorite::where('question_id', $question->id)->delete();
         return redirect()->back()->with('success', 'Retiré des favoris!');
     }
 }
