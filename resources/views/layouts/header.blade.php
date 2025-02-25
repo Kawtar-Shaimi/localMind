@@ -6,7 +6,13 @@
     </span>
     <div class="border-l border-gray-700 h-6"></div>
     <span class="text-gray-300 flex items-center">
-        <i class="far fa-user-circle mr-2"></i>
         <span>{{ auth()->user()->name }}</span>
+    </span>
+    <div class="border-l border-gray-700 h-6"></div>
+    <span class="text-gray-300 flex items-center">
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="font-mono hover:underline cursor-pointer">Logout</button>
+        </form>
     </span>
 </div>
